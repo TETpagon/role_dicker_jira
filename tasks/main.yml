@@ -1,0 +1,13 @@
+- name: Create docker volume for Jira
+  shell: docker volume create --name jiraVolume
+
+- name: Create directory for Jira
+  file: path=/var/atlassian/application-data/jira state=directory
+
+- name: Run docker
+  shell: docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" -d -p 8080:8080 atlassian/jira-software
+
+- name: Check docker
+  shell: docker ps
+  register: r
+- debug: msg="{{r.stdout}}"
